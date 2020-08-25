@@ -16,3 +16,20 @@ def gridmaker():
     print(grid[(0,1)].get('Age'))
 
 print(gridmaker())
+
+
+def alive(dictin,x,y):
+    thisisadict = dictin
+    thisisadict[(x,y)] = {'Alive':True}
+    return thisisadict
+def dead(dictin,x,y):
+    thisisadict = dictin
+    thisisadict.pop((x,y))
+    return thisisadict
+def donothing(dictin):
+    return dictin
+def mergedict(alive,dead):
+    outdict = {}
+    outdict.update(alive)
+    outdict.update(dead)
+    return outdict
