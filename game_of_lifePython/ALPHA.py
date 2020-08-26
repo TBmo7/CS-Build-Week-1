@@ -21,11 +21,9 @@ margin = 5
 #Will have a function that runs over the array and populates a hashtable with only alive values
 # Then have a function that searches over a copy of the array and then takes in a cell, checks alive neighbors and updates
 
-number_of_cells = 25
-
 grid = {}
-for x in range(number_of_cells):
-    for y in range(number_of_cells):
+for x in range(15):
+    for y in range(15):
         grid[(x,y)] = {'Alive':False, 'Age':0, 'Neighbors':0}
 
 #hash table to hold cells that are alive to prevent excessive executions
@@ -82,25 +80,25 @@ def rules_of_life(grid_in,alive_in):
     # below, just x is the coordinates
     #grid_in[x] is the object assigned to that
     #checking the neighbors below might be able to be it's own function just for cleaner code
-    
+
     for i in grid_in2:
 
 
 
 
 
-        #print('alive in for loop')
-        #print(alive)
+        print('alive in for loop')
+        print(alive)
         alive_neighbors = 0
         dead_neighbors = 0
         # set a list of variables here to all possibilites
         # create a function that takes two inputs and increments counters as needed instead or retyping retyping
         x,y = i
-        #print(f'This is x {x} this is y{y}')
-        #ax = x - 1 # this is the coord of current cell's x coord - 1
-        #ay = y - 1 # this is the coord of current cell's y coord - 1
-        #bx = x + 1 # this is the coord of current cell's x coord + 1 
-        #by = y + 1 # this is the coord of current cell's y coord + 1
+        print(f'This is x {x} this is y{y}')
+        ax = x - 1 # this is the coord of current cell's x coord - 1
+        ay = y - 1 # this is the coord of current cell's y coord - 1
+        bx = x + 1 # this is the coord of current cell's x coord + 1 
+        by = y + 1 # this is the coord of current cell's y coord + 1
         
         #TOP ROW OF NEIGHBORS
         #print(grid_in[(x,y)].get('Alive'))
@@ -126,7 +124,7 @@ def rules_of_life(grid_in,alive_in):
             else:
                 dead_neighbors += 1
         
-        if (x+1) < (number_of_cells-1) and  (y-1) > -1: #check neighbor "upper right"
+        if (x+1) < 14 and  (y-1) > -1: #check neighbor "upper right"
             if (x+1,y-1) in alive_in:
                 alive_neighbors += 1
             else:
@@ -139,7 +137,7 @@ def rules_of_life(grid_in,alive_in):
             else:
                 dead_neighbors += 1
         
-        if  (x+1) < (number_of_cells-1): #check neighbor to the right
+        if  (x+1) < 14: #check neighbor to the right
             if (x+1,y) in alive_in:
                 alive_neighbors += 1
             else:
@@ -147,19 +145,19 @@ def rules_of_life(grid_in,alive_in):
 
         ##BOTTOM ROW OF NEIGHBORS##
 
-        if (x-1) > -1 and  (y+1) < (number_of_cells-1): #check neighbor below to the left
+        if (x-1) > -1 and  (y+1) < 14: #check neighbor below to the left
             if (x-1,y+1) in alive_in:
                 alive_neighbors += 1
             else:
                 dead_neighbors += 1
 
-        if (y+1) < (number_of_cells-1): #check neighbor directly below
+        if (y+1) < 14: #check neighbor directly below
             if (x,y+1) in alive_in:
                 alive_neighbors += 1
             else:
                 dead_neighbors += 1
 
-        if (x+1) < (number_of_cells-1) and  (y+1) < (number_of_cells-1): #check neighbor below right
+        if (x+1) < 14 and  (y+1) < 14: #check neighbor below right
             if (x+1,y+1) in alive_in:
                 alive_neighbors += 1
             else:
@@ -178,8 +176,8 @@ def rules_of_life(grid_in,alive_in):
         if (x,y) in alive_in:
             
             if alive_neighbors < 2 or alive_neighbors > 3:
-                #print(f'REMOVING {x},{y}')
-                #print(f'ALIVE NEIGHBORS == {alive_neighbors}')
+                print(f'REMOVING {x},{y}')
+                print(f'ALIVE NEIGHBORS == {alive_neighbors}')
                 #alive.pop(x,y)
                 dead_dict = dead(alive,x,y)
             
@@ -193,8 +191,8 @@ def rules_of_life(grid_in,alive_in):
                 #grid_in2[x,y]['Alive'] = False       
         elif alive_neighbors == 3:
             
-            #print(f'ADDING {x},{y}')
-            #print(f'ALIVE NEIGHBORS == {alive_neighbors}')
+            print(f'ADDING {x},{y}')
+            print(f'ALIVE NEIGHBORS == {alive_neighbors}')
             #grid_in2[x,y] = True
             #alive[(x,y)] = {'Alive':True}
             alive_dict = grow(alive,x,y)
@@ -204,7 +202,7 @@ def rules_of_life(grid_in,alive_in):
         #print(grid_in)
         #alive = {}
     generation +=1    
-    #print(f'This is the {generation} {alive} ')    
+    print(f'This is the {generation} {alive} ')    
     return alive
         
 def main():
@@ -215,9 +213,8 @@ def main():
     pygame.init()
     alive_outer = {}
     clock = pygame.time.Clock()
-    #formula for screen size should be (cell width * cell number) + (margin * cell number) + margin width
-    cell_display = (width * number_of_cells) + ( margin * number_of_cells) + margin
-    screen = pygame.display.set_mode((cell_display,cell_display))
+    
+    screen = pygame.display.set_mode((380,380))
     done = False
     running = False
     pygame.display.set_caption("The Game of Life")
@@ -260,8 +257,8 @@ def main():
             #print(alive)
         
         #Checks for alive tiles and changes color accordingly
-        for row in range(number_of_cells):
-            for column in range (number_of_cells):
+        for row in range(15):
+            for column in range (15):
                 color = WHITE
                 if (row,column) in alive_outer:
                     color = GREEN
