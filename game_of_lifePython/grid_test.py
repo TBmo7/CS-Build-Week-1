@@ -33,3 +33,14 @@ def mergedict(alive,dead):
     outdict.update(alive)
     outdict.update(dead)
     return outdict
+
+def randomize(grid_in):
+    alive_out = {}
+    for i in grid_in:
+        x,y = i
+        choice = random.randint(0,1)
+        if choice == 1:
+            alive_out[(x,y)] = {'Alive':True}
+
+    
+    
