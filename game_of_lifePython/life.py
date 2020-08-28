@@ -42,6 +42,11 @@ def randomize(grid_in):
             alive_out[(x,y)] = {'Alive':True}
     return alive_out
 
+def clear_board():
+    alive_out = {}
+    
+    return alive_out
+
 def simulate(grid_in,dict_in,value):
     current_grid = grid_in
     current_dict = dict_in 
@@ -185,13 +190,24 @@ def main():
     screen = pygame.display.set_mode((cell_display + 100,cell_display ))
     done = False
     running = False
+    step = False
     pygame.display.set_caption("The Game of Life")
     manager = pygame_gui.UIManager((cell_display + 100, cell_display + 150))
     options_panel = pygame_gui.elements.UIPanel(starting_layer_height = 0, relative_rect = pygame.Rect(((627,3),(103,625))), manager = manager)
     run_button = pygame_gui.elements.UIButton(relative_rect = pygame.Rect((630,5), (97,50)),text = 'Start/Stop', manager = manager)
     rand_button = pygame_gui.elements.UIButton(relative_rect = pygame.Rect((630,60), (97,50)),text = 'Random', manager = manager)
-
+    clear_button = pygame_gui.elements.UIButton(relative_rect = pygame.Rect((630,115), (97,50)),text = 'Clear', manager = manager)
+    slow_button = pygame_gui.elements.UIButton(relative_rect = pygame.Rect((630,165), (97,50)),text = 'Slow', manager = manager)
+    normal_button = pygame_gui.elements.UIButton(relative_rect = pygame.Rect((630,215), (97,50)),text = 'Normal', manager = manager)
+    fast_button = pygame_gui.elements.UIButton(relative_rect = pygame.Rect((630,265), (97,50)),text = 'Fast', manager = manager)
+    simulate_text_input = pygame_gui.elements.UITextEntryLine(relative_rect = pygame.Rect((630,365),(97,50)),manager = manager)
+    simulate_button = pygame_gui.elements.UIButton(relative_rect = pygame.Rect((630,315), (97,50)),text = 'Simulate', manager = manager)
+    #step_button = pygame_gui.elements.UIButton(relative_rect = pygame.Rect((630,415), (97,50)),text = 'Step', manager = manager) 
+    
+    
+    #generation_list = pygame_gui.elements.UILabel(relative_rect = pygame.Rect((630,500),(97,50)),text = f'Generation{generation}',manager = manager)
     set_speed = 333
+    
     #pygame_gui.elements.ui_panel
     #CLICK TO SET INITIAL STATE
     while not done:
@@ -213,10 +229,11 @@ def main():
                         grid[(row,column)].update({'Alive':False})
                         if (row,column) in alive_outer:
                             alive_outer.pop((row,column))
-            
+            #RIGHT SIDE CONTROL PANEL
             elif event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == run_button:
+                        step = False
                         if running == False:
                             print('running')
                             running = True
@@ -226,6 +243,33 @@ def main():
                     if event.ui_element == rand_button:
                     
                         alive_outer = randomize(grid)
+                        generation = 0
+                    if event.ui_element == clear_button:
+                        alive_outer = clear_board()
+                        generation = 0
+                    
+                    if event.ui_element == slow_button:
+                        set_speed = 750
+                        step = False
+                    if event.ui_element == normal_button:
+                        set_speed = 333
+                        step = False
+                    if event.ui_element == fast_button:
+                        set_speed = 80
+                        step = False
+                    if event.ui_element == simulate_button:
+                        step = False
+                        this_value = int(simulate_text_input.get_text())
+                        generation +=this_value
+                        simulate(grid,alive_outer,this_value)
+                    
+                    #if event.ui_element == step_button:
+                        #step = True
+                          
+                    #if step == True:
+                        #ev = pygame.event.wait()
+                        #if ev.type == pygame_gui.UI_BUTTON_PRESSED:
+                            #break
                     
             #get rid of this below
             # TO IMPLEMENT : RANDOM BUTTON
@@ -251,6 +295,8 @@ def main():
             alive_outer = this_this
             generation += 1
             pygame.time.wait(set_speed)
+            #This line below is hacky, can fix later with proper blitting
+            generation_list = pygame_gui.elements.UILabel(relative_rect = pygame.Rect((630,500),(97,50)),text = f'Generation{generation}',manager = manager)
         #Checks for alive tiles and changes color accordingly
         for row in range(number_of_cells):
             for column in range (number_of_cells):
@@ -263,7 +309,7 @@ def main():
                                 (margin + height) * row + margin,
                                 width,
                                 height])
-                
+               
         clock.tick(60) #limit to 60 FPS
         manager.draw_ui(screen)
         pygame.display.flip()

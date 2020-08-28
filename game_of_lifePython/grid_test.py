@@ -41,6 +41,15 @@ def randomize(grid_in):
         choice = random.randint(0,1)
         if choice == 1:
             alive_out[(x,y)] = {'Alive':True}
+    return alive_out
 
-    
-    
+def simulate(grid_in,dict_in,value):
+    current_grid = grid_in
+    current_dict = dict_in 
+    i = 0
+    while i is not value:
+        inner_grid = current_grid
+        inner_dict = rules_of_life(inner_grid,current_dict)
+        value+=1
+        current_dict = inner_dict
+    return current_dict
