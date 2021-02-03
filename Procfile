@@ -1,1 +1,1 @@
-web : python life.py
+web : python game_of_lifePython/life.py
