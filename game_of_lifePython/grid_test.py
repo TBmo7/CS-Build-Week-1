@@ -53,3 +53,10 @@ def simulate(grid_in,dict_in,value):
         value+=1
         current_dict = inner_dict
     return current_dict
+
+def clear_board(grid_in):
+    alive_out = {}
+    for i in grid_in:
+        x,y = i
+        alive_out[(x,y)] = {'Alive':False}
+    return alive_out
